@@ -17,8 +17,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Flux;
 
-import static org.mockito.BDDMockito.given;
-
 @Log4j2
 //@WebFluxTest
 @RunWith(SpringRunner.class)
@@ -38,13 +36,6 @@ public class ProfileEndpointConfigurationTest {
         WebTestClient client = WebTestClient
                 .bindToRouterFunction(profileRouter.getProfiles())
                 .build();
-
-
-        given(profileRepository.findAll())
-                .willReturn(Flux.just(
-                        new Profile("1", "A"),
-                        new Profile("2", "B")
-                ));
 
         Mockito.when(profileRepository.findAll())
                 .thenReturn(Flux.just(
