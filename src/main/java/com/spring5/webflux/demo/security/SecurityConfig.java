@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.ReactiveUserDetailsService;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.server.SecurityWebFilterChain;
 import org.springframework.security.web.server.authorization.AuthorizationContext;
+import org.springframework.security.web.server.context.WebSessionServerSecurityContextRepository;
 import reactor.core.publisher.Mono;
 
 @Configuration
@@ -21,6 +22,8 @@ public class SecurityConfig {
     public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) throws Exception {
         return http
                 .csrf().disable()
+                .httpBasic().securityContextRepository(new WebSessionServerSecurityContextRepository())
+                .and()
                 .authorizeExchange()
                 .pathMatchers(HttpMethod.GET, "/profiles/**").permitAll()
                 .anyExchange().authenticated()
