@@ -42,4 +42,16 @@ public class ReactorSnippetsTest {
 
         helloPauseWorld.subscribe(System.out::println);
     }
+
+    @Test
+    public void firstEmitting() {
+        Mono<String> a = Mono.just("oops I'm late")
+                .delaySubscription(Duration.ofMillis(450));
+        Flux<String> b = Flux.just("let's get", "the party", "started")
+                .delaySubscription(Duration.ofMillis(400));
+
+        Flux.first(a, b)
+                .toIterable()
+                .forEach(System.out::println);
+    }
 }
