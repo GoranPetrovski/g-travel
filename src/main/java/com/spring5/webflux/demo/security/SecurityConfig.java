@@ -26,6 +26,7 @@ public class SecurityConfig {
                 .and()
                 .authorizeExchange()
                 .pathMatchers(HttpMethod.GET, "/profiles/**").permitAll()
+                .pathMatchers("/auth/**").authenticated()
                 .anyExchange().authenticated()
                 .and()
                 .build();

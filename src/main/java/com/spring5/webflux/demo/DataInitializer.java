@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Profile;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
 
@@ -26,6 +27,8 @@ public class DataInitializer implements ApplicationListener<ApplicationReadyEven
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public void onApplicationEvent(ApplicationReadyEvent applicationReadyEvent) {
@@ -58,7 +61,7 @@ public class DataInitializer implements ApplicationListener<ApplicationReadyEven
                                             User user = User.builder()
                                                     .roles(roles)
                                                     .username(username)
-                                                    .password("password")
+                                                    .password(passwordEncoder.encode("password"))
                                                     .email(username + "@example.com")
                                                     .build();
                                             return userRepository.save(user);

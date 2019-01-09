@@ -1,28 +1,21 @@
 package com.spring5.webflux.demo.web;
 
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.authority.AuthorityUtils;
+import com.spring5.webflux.demo.models.User;
+import com.spring5.webflux.demo.repositories.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
-
-import java.security.Principal;
-import java.util.HashMap;
-import java.util.Map;
 
 @RestController
 public class UserController {
 
-    @GetMapping("/user")
-    public Mono<Map> current(@AuthenticationPrincipal Mono<Principal> principal) {
-        return principal
-                .map(user -> {
-                    Map<String, Object> map = new HashMap<>();
-                    map.put("name", user.getName());
-                    map.put("roles", AuthorityUtils.authorityListToSet(((Authentication) user)
-                            .getAuthorities()));
-                    return map;
-                });
+    @Autowired
+    private UserRepository userRepository;
+
+    @GetMapping("/users/{username}")
+    public Mono<User> get(@PathVariable() String username) {
+        return userRepository.findByUsername(username);
     }
 }
