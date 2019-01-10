@@ -1,4 +1,4 @@
-package com.spring5.webflux.demo.web;
+package com.spring5.webflux.demo.controllers;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

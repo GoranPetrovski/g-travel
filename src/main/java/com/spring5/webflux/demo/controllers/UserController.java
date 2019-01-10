@@ -1,4 +1,4 @@
-package com.spring5.webflux.demo.web;
+package com.spring5.webflux.demo.controllers;
 
 import com.spring5.webflux.demo.models.User;
 import com.spring5.webflux.demo.repositories.UserRepository;
