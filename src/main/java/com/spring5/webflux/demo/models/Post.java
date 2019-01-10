@@ -29,7 +29,7 @@ public class Post implements Serializable {
 
     private LocalDateTime createdDate = LocalDateTime.now();
 
-    enum Status {
+    public enum Status {
         DRAFT,
         PUBLISHED
     }
