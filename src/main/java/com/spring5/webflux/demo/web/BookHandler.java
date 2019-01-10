@@ -1,5 +1,6 @@
 package com.spring5.webflux.demo.web;
 
+import com.spring5.webflux.demo.exceptions.BookNotFoundException;
 import com.spring5.webflux.demo.models.Book;
 import com.spring5.webflux.demo.services.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,8 @@ public class BookHandler {
 
         return ok()
                 .contentType(APPLICATION_JSON)
-                .body(bookService.findById(id), Book.class);
+                .body(bookService.findById(id), Book.class)
+                .switchIfEmpty(Mono.error(new BookNotFoundException(id)));
                 //.defaultIfEmpty(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
