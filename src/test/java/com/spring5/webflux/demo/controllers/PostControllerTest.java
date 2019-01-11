@@ -1,6 +1,8 @@
 package com.spring5.webflux.demo.controllers;
 
 import com.spring5.webflux.demo.BookserviceApplication;
+import com.spring5.webflux.demo.helpers.PostId;
+import com.spring5.webflux.demo.models.Comment;
 import com.spring5.webflux.demo.models.Post;
 import com.spring5.webflux.demo.repositories.CommentRepository;
 import com.spring5.webflux.demo.repositories.PostRepository;
@@ -16,6 +18,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.web.reactive.function.BodyInserters;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -142,6 +145,151 @@ public class PostControllerTest {
         verifyNoMoreInteractions(postRepository);
 
     }
+
+    @Test
+    public void getPostByNonExistedId_shouldReturn404() {
+        given(postRepository.findById("1"))
+                .willReturn(Mono.empty());
+
+        client.get().uri("/posts/1").exchange()
+                .expectStatus().isNotFound();
+
+        verify(postRepository, times(1)).findById(anyString());
+        verifyNoMoreInteractions(postRepository);
+    }
+
+    @Test
+    public void updatePost_shouldBeOk() {
+        Post post = Post.builder()
+                .id("1")
+                .title("my first post")
+                .content("content of my first post")
+                .createdDate(LocalDateTime.now()).build();
+
+        given(postRepository.findById("1"))
+                .willReturn(Mono.just(post));
+
+        post.setTitle("updated title");
+        post.setContent("updated content");
+
+        given(postRepository.save(post))
+                .willReturn(Mono.just(Post.builder()
+                        .id("1")
+                        .title("updated title")
+                        .content("updated content")
+                        .createdDate(LocalDateTime.now()).build()));
+
+        client.mutate().filter(basicAuthentication(user, password)).build()
+                .put().uri("/posts/1").body(BodyInserters.fromObject(post))
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody()
+                .jsonPath("$.title").isEqualTo("updated title")
+                .jsonPath("$.id").isEqualTo("1")
+                .jsonPath("$.content").isEqualTo("updated content")
+                .jsonPath("$.createdDate").isNotEmpty();
+
+        verify(postRepository, times(1)).findById(anyString());
+        verify(postRepository, times(1)).save(any(Post.class));
+        verifyNoMoreInteractions(postRepository);
+    }
+
+    @Test
+    public void createPost_shouldBeOk() {
+        Post post = Post.builder()
+                .title("my first post")
+                .content("content of my first post").build();
+
+        given(postRepository.save(post))
+                .willReturn(Mono.just(Post.builder()
+                        .id("1")
+                        .title("my first post")
+                        .content("content of my first post")
+                        .createdDate(LocalDateTime.now()).build()));
+
+        client.mutate().filter(basicAuthentication(user, password)).build()
+                .post().uri("/posts").body(BodyInserters.fromObject(post))
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody()
+                .jsonPath("$.title").isEqualTo("my first post")
+                .jsonPath("$.id").isEqualTo("1")
+                .jsonPath("$.content").isEqualTo("content of my first post")
+                .jsonPath("$.createdDate").isNotEmpty();
+
+        verify(postRepository, times(1)).save(any(Post.class));
+        verifyNoMoreInteractions(postRepository);
+    }
+
+    @Test
+    public void deletePost_shouldBeOk() {
+        Post post = Post.builder()
+                .id("1")
+                .title("my first post")
+                .content("content of my first post")
+                .createdDate(LocalDateTime.now()).build();
+
+        given(postRepository.findById("1"))
+                .willReturn(Mono.just(post));
+
+        given(postRepository.delete(post))
+                .willReturn(Mono.empty());
+
+        client.mutate().filter(basicAuthentication(user, password)).build()
+                .delete().uri("/posts/1")
+                .exchange()
+                .expectStatus().isNoContent();
+
+        verify(postRepository, times(1)).findById(anyString());
+        verify(postRepository, times(1)).delete(any(Post.class));
+        verifyNoMoreInteractions(postRepository);
+    }
+
+    //TODO consult with Eli
+//    @Test
+//    public void getCommentsByPostId_shouldBeOk() {
+//        given(commentRepository.findByPost(new PostId("1")))
+//                .willReturn(Flux.just(Comment.builder()
+//                        .id("comment-id-1")
+//                        .post(new PostId("1"))
+//                        .content("comment of my first post").build()));
+//
+//        client.mutate().filter(basicAuthentication(user, password)).build()
+//                .get().uri("/posts/1/comments").exchange()
+//                .expectStatus().isOk()
+//                .expectBody()
+//                .jsonPath("$[0].id").isEqualTo("comment-id-1")
+//                .jsonPath("$[0].content").isEqualTo("comment of my first post");
+//
+//        verify(commentRepository, times(1)).findByPost(any(PostId.class));
+//        verifyNoMoreInteractions(commentRepository);
+//
+//    }
+
+    @Test
+    public void createCommentOfPost_shouldBeOk() {
+
+        given(commentRepository.save(any(Comment.class)))
+                .willReturn(Mono.just(Comment.builder()
+                        .id("comment-id-1")
+                        .post(PostId.builder().id("1").build())
+                        .content("content of my first post")
+                        .createdDate(LocalDateTime.now()).build()));
+
+        Comment form = Comment.builder().content("comment of my first post").build();
+        client.mutate().filter(basicAuthentication(user, password)).build()
+                .post().uri("/posts/1/comments").body(BodyInserters.fromObject(form))
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody()
+                .jsonPath("$.id").isEqualTo("comment-id-1")
+                .jsonPath("$.content").isEqualTo("content of my first post")
+                .jsonPath("$.createdDate").isNotEmpty();
+
+        verify(commentRepository, times(1)).save(any(Comment.class));
+        verifyNoMoreInteractions(commentRepository);
+    }
+
 
     private Post buildPost(String id) {
         return Post.builder()
