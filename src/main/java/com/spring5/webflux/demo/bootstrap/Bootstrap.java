@@ -1,14 +1,8 @@
 package com.spring5.webflux.demo.bootstrap;
 
 import com.spring5.webflux.demo.helpers.PostId;
-import com.spring5.webflux.demo.models.Book;
-import com.spring5.webflux.demo.models.Comment;
-import com.spring5.webflux.demo.models.Post;
-import com.spring5.webflux.demo.models.User;
-import com.spring5.webflux.demo.repositories.BookRepository;
-import com.spring5.webflux.demo.repositories.CommentRepository;
-import com.spring5.webflux.demo.repositories.PostRepository;
-import com.spring5.webflux.demo.repositories.UserRepository;
+import com.spring5.webflux.demo.models.*;
+import com.spring5.webflux.demo.repositories.*;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -33,6 +27,9 @@ public class Bootstrap implements CommandLineRunner {
     private PostRepository postRepository;
 
     @Autowired
+    private CityRepository cityRepository;
+
+    @Autowired
     private UserRepository userRepository;
 
     @Autowired
@@ -44,7 +41,7 @@ public class Bootstrap implements CommandLineRunner {
         if (bookRepository.count().block() == 0) {
             this.booksInitialization();
         }
-        if(postRepository.count().block() == 0){
+        if (postRepository.count().block() == 0) {
             this.postsInitialization();
         }
         this.userInitialization();
@@ -102,5 +99,17 @@ public class Bootstrap implements CommandLineRunner {
         bookRepository.save(Book.builder()
                 .author("Dan Brown")
                 .title("Angels and Demons").build()).block();
+    }
+
+    public void cityInitialization() {
+        cityRepository.save(City.builder()
+                .name("Skopje").build()).block();
+
+        cityRepository.save(City.builder()
+                .name("Probishtip").build()).block();
+
+        cityRepository.save(City.builder()
+                .name("Veles").build()).block();
+
     }
 }
