@@ -7,6 +7,7 @@ import com.spring5.webflux.demo.repositories.*;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
@@ -18,6 +19,7 @@ import java.util.List;
 
 @Log4j2
 @Component
+@Profile("!test")
 public class Bootstrap implements CommandLineRunner {
 
     @Autowired

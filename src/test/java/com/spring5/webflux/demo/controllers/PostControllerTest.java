@@ -61,8 +61,7 @@ public class PostControllerTest {
         given(postRepository.findAll())
                 .willReturn(Flux.empty());
         client
-                .get()
-                .uri("/posts")
+                .get().uri("/posts")
                 .exchange()
                 .expectStatus().isOk();
     }
@@ -93,16 +92,18 @@ public class PostControllerTest {
         verifyNoMoreInteractions(postRepository);
     }
 
-    //DOTO consult with Eli
-//    @Test
-//    public void updateNoneExistedPostWithUserRole_shouldReturn404() {
-//        client
-//                .mutate().filter(basicAuthentication("user", "password")).build()
-//                .get()
-//                .uri("/posts/4")
-//                .exchange()
-//                .expectStatus().isEqualTo(HttpStatus.NOT_FOUND);
-//    }
+    @Test
+    public void updateNoneExistedPostWithUserRole_shouldReturn404() {
+        client
+                .mutate().filter(basicAuthentication("user", "password")).build()
+                .put().uri("/posts/4")
+                .body(BodyInserters.fromObject(Post.builder()
+                        .id("4")
+                        .title("Post test")
+                        .content("content of post test").build()))
+                .exchange()
+                .expectStatus().isEqualTo(HttpStatus.NOT_FOUND);
+    }
 
     @Test
     public void getAllPostsByKeyword_shouldBeOk() {
