@@ -1,5 +1,6 @@
 package com.spring5.webflux.demo.bootstrap;
 
+import com.spring5.webflux.demo.helpers.BaseId;
 import com.spring5.webflux.demo.helpers.PostId;
 import com.spring5.webflux.demo.models.*;
 import com.spring5.webflux.demo.repositories.*;
@@ -9,7 +10,9 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 
@@ -30,6 +33,15 @@ public class Bootstrap implements CommandLineRunner {
     private CityRepository cityRepository;
 
     @Autowired
+    private CarRepository carRepository;
+
+    @Autowired
+    private TravelRepository travelRepository;
+
+    @Autowired
+    private TravelOfferRepository travelOfferRepository;
+
+    @Autowired
     private UserRepository userRepository;
 
     @Autowired
@@ -38,11 +50,17 @@ public class Bootstrap implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         System.out.println("RUNNNN");
-        if (bookRepository.count().block() == 0) {
+        if (isEmpty(bookRepository.count().block())) {
             this.booksInitialization();
         }
-        if (postRepository.count().block() == 0) {
+        if (isEmpty(postRepository.count().block())) {
             this.postsInitialization();
+        }
+        if (isEmpty(cityRepository.count().block())) {
+            this.cityInitialization();
+        }
+        if (isEmpty(travelRepository.count().block())) {
+            this.travelInitialization();
         }
         this.userInitialization();
     }
@@ -110,6 +128,39 @@ public class Bootstrap implements CommandLineRunner {
 
         cityRepository.save(City.builder()
                 .name("Veles").build()).block();
+    }
+
+    public void travelInitialization() {
+        String fromLocationId = cityRepository.findByName("Skopje").block().getId();
+        String toDestinationId = cityRepository.findByName("Probishtip").block().getId();
+        String userId = userRepository.findByUsername("user").block().getId();
+
+
+        Mono<Travel> travel = travelRepository.save(Travel.builder()
+                .fromLocation(new BaseId(fromLocationId))
+                .toDestination(new BaseId(toDestinationId))
+                .date(LocalDate.now()).user(new BaseId(userId))
+                .type(Travel.Type.DRIVER).build());
+
+        Mono<Car> car = carRepository.save(Car.builder()
+                .brand("VW")
+                .model("Golf V")
+                .user(new BaseId(userId))
+                .numOfSeats(5).build());
+
+        travelOfferRepository.save(TravelOffer.builder()
+                .travel(new BaseId(travel.block().getId()))
+                .car(new BaseId(car.block().getId()))
+                .freeSeats(3)
+                .build()).block();
 
     }
+
+    private Boolean isEmpty(Long num) {
+        if (num == 0) {
+            return true;
+        }
+        return false;
+    }
+
 }

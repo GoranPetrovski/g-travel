@@ -1,5 +1,6 @@
 package com.spring5.webflux.demo.models;
 
+import com.spring5.webflux.demo.helpers.BaseId;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,7 +17,7 @@ public class Car {
     @Id
     private String id;
 
-    private User user;
+    private BaseId user;
 
     private String brand;
 
@@ -24,5 +25,5 @@ public class Car {
 
     private String registration;
 
-    private String numOfSeats;
+    private Integer numOfSeats;
 }

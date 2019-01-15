@@ -25,11 +25,7 @@ public class Travel {
 
     private BaseId user; //userId
 
-    private Type type = Type.TRAVELER;
-
-    private Integer seats;
-
-    private BaseId car; // carId
+    private Type type = Type.TRAVELER; // default
 
     public enum Type {
         DRIVER,
