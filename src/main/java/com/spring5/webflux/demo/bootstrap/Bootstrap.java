@@ -21,9 +21,6 @@ import java.util.List;
 public class Bootstrap implements CommandLineRunner {
 
     @Autowired
-    private BookRepository bookRepository;
-
-    @Autowired
     private CommentRepository commentRepository;
 
     @Autowired
@@ -49,10 +46,7 @@ public class Bootstrap implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        System.out.println("RUNNNN");
-        if (isEmpty(bookRepository.count().block())) {
-            this.booksInitialization();
-        }
+        System.out.println("RUN ...");
         if (isEmpty(postRepository.count().block())) {
             this.postsInitialization();
         }
@@ -103,20 +97,6 @@ public class Bootstrap implements CommandLineRunner {
         commentRepository.save(Comment.builder()
                 .content("Yeah! It's very realistic post")
                 .post(new PostId(post.getId())).build()).block();
-    }
-
-    public void booksInitialization() {
-        bookRepository.save(Book.builder()
-                .author("Dan Brown")
-                .title("Deception Point").build()).block();
-
-        bookRepository.save(Book.builder()
-                .author("Dan Brown")
-                .title("Disgital Forests").build()).block();
-
-        bookRepository.save(Book.builder()
-                .author("Dan Brown")
-                .title("Angels and Demons").build()).block();
     }
 
     public void cityInitialization() {

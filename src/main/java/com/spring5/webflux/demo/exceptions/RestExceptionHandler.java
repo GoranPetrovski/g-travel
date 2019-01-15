@@ -16,7 +16,7 @@ public class RestExceptionHandler implements WebExceptionHandler {
 
     @Override
     public Mono<Void> handle(ServerWebExchange serverWebExchange, Throwable throwable) {
-        if (throwable instanceof PostNotFoundException || throwable instanceof BookNotFoundException) {
+        if (throwable instanceof PostNotFoundException) {
             serverWebExchange.getResponse().setStatusCode(HttpStatus.NOT_FOUND);
             return serverWebExchange.getResponse().setComplete();
         }
