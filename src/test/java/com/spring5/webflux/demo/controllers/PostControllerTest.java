@@ -1,6 +1,6 @@
 package com.spring5.webflux.demo.controllers;
 
-import com.spring5.webflux.demo.BookserviceApplication;
+import com.spring5.webflux.demo.GTravelApplication;
 import com.spring5.webflux.demo.helpers.PostId;
 import com.spring5.webflux.demo.models.Comment;
 import com.spring5.webflux.demo.models.Post;
@@ -30,7 +30,7 @@ import static org.mockito.Mockito.*;
 import static org.springframework.web.reactive.function.client.ExchangeFilterFunctions.basicAuthentication;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = BookserviceApplication.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = GTravelApplication.class)
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class PostControllerTest {
 

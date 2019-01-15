@@ -31,4 +31,8 @@ public class TravelController {
         return travelService.getById(id);
     }
 
+    @GetMapping("/{type}")
+    public Flux<Travel> getByType(@PathVariable("type") Travel.Type type) {
+        return travelService.getByType(type);
+    }
 }

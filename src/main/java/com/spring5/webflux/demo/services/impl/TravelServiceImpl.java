@@ -30,4 +30,9 @@ public class TravelServiceImpl implements TravelService {
         return travelRepository.findById(id)
                 .switchIfEmpty(Mono.error(new PostNotFoundException(id)));
     }
+
+    @Override
+    public Flux<Travel> getByType(Travel.Type type) {
+        return travelRepository.findByType(type);
+    }
 }

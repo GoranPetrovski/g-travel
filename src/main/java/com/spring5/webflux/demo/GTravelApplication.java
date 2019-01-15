@@ -7,10 +7,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @SpringBootApplication
-public class BookserviceApplication {
+public class GTravelApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(BookserviceApplication.class, args);
+        SpringApplication.run(GTravelApplication.class, args);
     }
 
     @Bean

@@ -11,4 +11,6 @@ public interface TravelService {
     Mono<Travel> create(Travel travel);
 
     Mono<Travel> getById(String id);
+
+    Flux<Travel> getByType(Travel.Type type);
 }

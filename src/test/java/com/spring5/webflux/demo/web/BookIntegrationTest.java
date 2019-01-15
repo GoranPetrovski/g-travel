@@ -1,6 +1,6 @@
 package com.spring5.webflux.demo.web;
 
-import com.spring5.webflux.demo.BookserviceApplication;
+import com.spring5.webflux.demo.GTravelApplication;
 import com.spring5.webflux.demo.models.Book;
 import com.spring5.webflux.demo.repositories.BookRepository;
 import org.junit.FixMethodOrder;
@@ -17,7 +17,7 @@ import reactor.core.publisher.Mono;
 import static org.mockito.BDDMockito.given;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = BookserviceApplication.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = GTravelApplication.class)
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class BookIntegrationTest {
 
