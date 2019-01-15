@@ -17,4 +17,6 @@ public class TravelOffer {
     private Integer freeSeats;
 
     private BaseId car; // carId
+
+    private Double price;
 }
