@@ -4,7 +4,6 @@ import com.spring5.webflux.demo.exceptions.PostNotFoundException;
 import com.spring5.webflux.demo.models.Post;
 import com.spring5.webflux.demo.services.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
@@ -12,8 +11,8 @@ import reactor.core.publisher.Mono;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.web.reactive.function.server.ServerResponse.ok;
 
-
-@Component
+//TODO Elena disabled to avoid handler disambiguate
+//@Component
 public class PostHandler {
     @Autowired
     private PostService postService;

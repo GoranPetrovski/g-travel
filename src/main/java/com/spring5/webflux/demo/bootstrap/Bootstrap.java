@@ -47,7 +47,7 @@ public class Bootstrap implements CommandLineRunner {
     private PasswordEncoder passwordEncoder;
 
     @Override
-    public void run(String... args) throws Exception {
+    public void run(String... args) {
         System.out.println("RUN ...");
         if (isEmpty(postRepository.count().block())) {
             this.postsInitialization();

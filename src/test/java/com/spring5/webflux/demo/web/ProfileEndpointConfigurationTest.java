@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Flux;
@@ -24,6 +25,7 @@ import static org.mockito.BDDMockito.given;
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = GTravelApplication.class)
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
+@ActiveProfiles("test")
 public class ProfileEndpointConfigurationTest {
 
     @Autowired
@@ -42,12 +44,6 @@ public class ProfileEndpointConfigurationTest {
 
         given(profileRepository.findAll())
                 .willReturn(Flux.just(
-                        new Profile("1", "A"),
-                        new Profile("2", "B")
-                ));
-
-        Mockito.when(profileRepository.findAll())
-                .thenReturn(Flux.just(
                         new Profile("1", "A"),
                         new Profile("2", "B")
                 ));
