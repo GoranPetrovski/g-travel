@@ -25,4 +25,10 @@ public class TravelRequestServiceImpl implements TravelRequestService {
     public Mono<Travel> findByTravel(BaseId id) {
         return travelRequestRepository.findByTravel(id);
     }
+
+    @Override
+    public Mono<TravelRequest> createRequestByType(String travelId, TravelRequest request) {
+        request.setTravel(new BaseId(travelId));
+        return travelRequestRepository.save(request);
+    }
 }

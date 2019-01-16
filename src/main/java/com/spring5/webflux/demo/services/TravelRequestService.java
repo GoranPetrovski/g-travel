@@ -11,4 +11,6 @@ public interface TravelRequestService {
     Flux<TravelRequest> findAll();
 
     Mono<Travel> findByTravel(BaseId id);
+
+    Mono<TravelRequest> createRequestByType(String travelId, TravelRequest request);
 }

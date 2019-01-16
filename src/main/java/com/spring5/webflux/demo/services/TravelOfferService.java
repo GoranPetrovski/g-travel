@@ -10,4 +10,6 @@ public interface TravelOfferService {
     Mono<Travel> getByTravelId(BaseId id);
 
     Flux<TravelOffer> getAll();
+
+    Mono<TravelOffer> createOfferByType(String travelId, TravelOffer offer);
 }

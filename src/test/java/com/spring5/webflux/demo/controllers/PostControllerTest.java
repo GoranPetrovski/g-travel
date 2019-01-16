@@ -27,11 +27,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.anyString;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.*;
 import static org.springframework.web.reactive.function.client.ExchangeFilterFunctions.basicAuthentication;
 
 @RunWith(SpringRunner.class)
@@ -94,8 +90,8 @@ public class PostControllerTest {
                 .jsonPath("$.[0].id").isEqualTo("1")
                 .jsonPath("$.[0].content").isEqualTo("content of my new post");
 
-       // verify(postRepository, times(1)).findAll();
-        //verifyNoMoreInteractions(postRepository);
+        verify(postRepository, times(1)).findAll();
+        verifyNoMoreInteractions(postRepository);
     }
 
     @Test
@@ -296,7 +292,6 @@ public class PostControllerTest {
         verify(commentRepository, times(1)).save(any(Comment.class));
         verifyNoMoreInteractions(commentRepository);
     }
-
 
     private Post buildPost(String id) {
         return Post.builder()

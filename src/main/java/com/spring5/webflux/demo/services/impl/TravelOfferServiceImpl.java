@@ -25,4 +25,10 @@ public class TravelOfferServiceImpl implements TravelOfferService {
     public Flux<TravelOffer> getAll() {
         return travelOfferRepository.findAll();
     }
+
+    @Override
+    public Mono<TravelOffer> createOfferByType(String travelId, TravelOffer offer) {
+        offer.setTravel(new BaseId(travelId));
+        return travelOfferRepository.save(offer);
+    }
 }
