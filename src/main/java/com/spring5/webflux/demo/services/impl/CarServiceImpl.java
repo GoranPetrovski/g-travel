@@ -1,5 +1,6 @@
 package com.spring5.webflux.demo.services.impl;
 
+import com.spring5.webflux.demo.helpers.BaseId;
 import com.spring5.webflux.demo.models.Car;
 import com.spring5.webflux.demo.repositories.CarRepository;
 import com.spring5.webflux.demo.services.CarService;
@@ -20,7 +21,8 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public Mono<Car> create(Car car) {
+    public Mono<Car> create(String id, Car car) {
+        car.setUser(new BaseId(id));
         return carRepository.save(car);
     }
 }

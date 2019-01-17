@@ -21,8 +21,8 @@ public class CarController {
         return carService.getAll();
     }
 
-    @PostMapping("")
-    public Mono<Car> create(@RequestBody @Valid Car car) {
-        return carService.create(car);
+    @PostMapping("/{id}/user")
+    public Mono<Car> create(@PathVariable("id") String id, @RequestBody @Valid Car car) {
+        return carService.create(id, car);
     }
 }
