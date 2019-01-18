@@ -11,8 +11,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Book {
+public class City {
     private String id;
-    private String title;
-    private String author;
+    private String name;
+    private Double latitude;
+    private Double longitude;
 }

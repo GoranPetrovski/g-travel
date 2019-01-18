@@ -1,7 +1,7 @@
 package com.spring5.webflux.demo.repositories;
 
-import com.spring5.webflux.demo.models.Book;
+import com.spring5.webflux.demo.models.Car;
 import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
 
-public interface BookRepository extends ReactiveMongoRepository<Book, String> {
+public interface CarRepository extends ReactiveMongoRepository<Car, String> {
 }

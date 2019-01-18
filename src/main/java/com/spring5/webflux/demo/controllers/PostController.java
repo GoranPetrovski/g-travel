@@ -8,8 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
 import javax.validation.Valid;
+
 import static org.springframework.http.HttpStatus.NO_CONTENT;
 
 @RestController
@@ -18,7 +18,6 @@ public class PostController {
 
     @Autowired
     private PostService postService;
-    private Mono<Post> postMono;
 
     @GetMapping("")
     public Flux<Post> all(@RequestParam(value = "q", required = false) String q,

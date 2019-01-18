@@ -8,6 +8,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.util.StringUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -15,9 +16,11 @@ import reactor.test.StepVerifier;
 
 import java.util.function.Predicate;
 
+//TODO check failing tests - all
 @Log4j2
 @DataMongoTest
 @Import(ProfileServiceImpl.class)
+@ActiveProfiles("test")
 public class ProfileServiceImplTest {
 
     @Autowired
