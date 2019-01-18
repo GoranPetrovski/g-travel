@@ -3,7 +3,6 @@ package com.spring5.webflux.demo.controllers;
 import com.spring5.webflux.demo.GTravelApplication;
 import com.spring5.webflux.demo.helpers.BaseId;
 import com.spring5.webflux.demo.models.Car;
-import com.spring5.webflux.demo.models.Post;
 import com.spring5.webflux.demo.repositories.CarRepository;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
@@ -19,6 +18,7 @@ import org.springframework.web.reactive.function.BodyInserters;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.web.reactive.function.client.ExchangeFilterFunctions.basicAuthentication;
 
@@ -62,24 +62,24 @@ public class CarControllerTest {
     @Test
     public void createCarByUser_ShouldBeOk() {
         Car car = Car.builder()
-                .user(new BaseId("1"))
                 .brand("Audi")
                 .model("A4")
                 .numOfSeats(5).build();
 
-        given(carRepository.save(car)).willReturn(Mono.just(Car.builder()
+        given(carRepository.save(any(Car.class))).willReturn(Mono.just(Car.builder()
                 .id("1")
                 .user(new BaseId("1"))
-                .brand("Audi").build()));
+                .brand("Audi")
+                .model("A4")
+                .numOfSeats(5).build()));
 
         client.mutate().filter(basicAuthentication(user, password)).build()
                 .post().uri("/cars/1/user")
-                .body(BodyInserters.fromObject(car))
-                .exchange()
+                .body(BodyInserters.fromObject(car)).exchange()
                 .expectStatus().isOk()
-                .expectBody();
-                //.jsonPath("$.model").isEqualTo("A4")
-                //.jsonPath("$.user.id").isEqualTo("1");
+                .expectBody()
+                .jsonPath("$.model").isEqualTo("A4")
+                .jsonPath("$.user.id").isEqualTo("1");
     }
 
 }

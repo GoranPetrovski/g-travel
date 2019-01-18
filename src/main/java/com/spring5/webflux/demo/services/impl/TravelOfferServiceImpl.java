@@ -1,7 +1,6 @@
 package com.spring5.webflux.demo.services.impl;
 
 import com.spring5.webflux.demo.helpers.BaseId;
-import com.spring5.webflux.demo.models.Travel;
 import com.spring5.webflux.demo.models.TravelOffer;
 import com.spring5.webflux.demo.repositories.TravelOfferRepository;
 import com.spring5.webflux.demo.services.TravelOfferService;
@@ -17,7 +16,7 @@ public class TravelOfferServiceImpl implements TravelOfferService {
     private TravelOfferRepository travelOfferRepository;
 
     @Override
-    public Mono<Travel> getByTravelId(BaseId id) {
+    public Mono<TravelOffer> getByTravelId(BaseId id) {
         return travelOfferRepository.findByTravel(id);
     }
 

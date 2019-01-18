@@ -1,7 +1,6 @@
 package com.spring5.webflux.demo.controllers;
 
 import com.spring5.webflux.demo.helpers.BaseId;
-import com.spring5.webflux.demo.models.Travel;
 import com.spring5.webflux.demo.models.TravelOffer;
 import com.spring5.webflux.demo.services.TravelOfferService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,12 +21,12 @@ public class TravelOfferControlller {
     }
 
     @GetMapping("/travel/{id}")
-    public Mono<Travel> getTravelById(@PathVariable("id") String id) {
+    public Mono<TravelOffer> getTravelById(@PathVariable("id") String id) {
         return travelOfferService.getByTravelId(new BaseId(id));
     }
 
     @PostMapping("/{id}/travel")
-    public Mono<TravelOffer> createOfferByType(@PathVariable("id") String id, TravelOffer offer) {
+    public Mono<TravelOffer> createOfferByType(@PathVariable("id") String id, @RequestBody TravelOffer offer) {
         return travelOfferService.createOfferByType(id, offer);
     }
 }

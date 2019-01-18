@@ -17,6 +17,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.when;
 import static org.springframework.web.reactive.function.client.ExchangeFilterFunctions.basicAuthentication;
 
 @RunWith(SpringRunner.class)
@@ -56,7 +57,7 @@ public class CityControllerTest {
     @Test
     public void findCityByName_ShouldBeOk() {
 
-        given(cityRepository.findByName("Skopje")).willReturn(Mono.just(City.builder()
+        when(cityRepository.findByName("Skopje")).thenReturn(Mono.just(City.builder()
                 .id("1")
                 .name("Skopje").build()));
 
