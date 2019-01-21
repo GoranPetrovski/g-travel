@@ -1,6 +1,7 @@
 package com.spring5.webflux.demo.controllers;
 
 import com.spring5.webflux.demo.GTravelApplication;
+import com.spring5.webflux.demo.helpers.BaseId;
 import com.spring5.webflux.demo.helpers.PostId;
 import com.spring5.webflux.demo.models.Comment;
 import com.spring5.webflux.demo.models.Post;
@@ -203,21 +204,23 @@ public class PostControllerTest {
                 .title("my first post")
                 .content("content of my first post").build();
 
-        given(postRepository.save(post))
+        given(postRepository.save(any(Post.class)))
                 .willReturn(Mono.just(Post.builder()
                         .id("1")
                         .title("my first post")
                         .content("content of my first post")
+                        .travel(new BaseId("1"))
                         .createdDate(LocalDateTime.now()).build()));
 
         client.mutate().filter(basicAuthentication(user, password)).build()
-                .post().uri("/posts").body(BodyInserters.fromObject(post))
+                .post().uri("/posts/1/travel").body(BodyInserters.fromObject(post))
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody()
                 .jsonPath("$.title").isEqualTo("my first post")
                 .jsonPath("$.id").isEqualTo("1")
                 .jsonPath("$.content").isEqualTo("content of my first post")
+                .jsonPath("$.travel.id").isEqualTo("1")
                 .jsonPath("$.createdDate").isNotEmpty();
 
         verify(postRepository, times(1)).save(any(Post.class));

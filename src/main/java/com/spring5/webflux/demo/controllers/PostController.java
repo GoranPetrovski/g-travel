@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
 import javax.validation.Valid;
 
 import static org.springframework.http.HttpStatus.NO_CONTENT;
@@ -31,9 +32,9 @@ public class PostController {
         return postService.count(q);
     }
 
-    @PostMapping("")
-    public Mono<Post> create(@RequestBody @Valid Post post) {
-        return postService.create(post);
+    @PostMapping("/{id}/travel")
+    public Mono<Post> create(@PathVariable("id") String id, @RequestBody @Valid Post post) {
+        return postService.createForTravel(id, post);
     }
 
     @GetMapping("/{id}")

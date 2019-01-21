@@ -1,6 +1,7 @@
 package com.spring5.webflux.demo.services.impl;
 
 import com.spring5.webflux.demo.exceptions.PostNotFoundException;
+import com.spring5.webflux.demo.helpers.BaseId;
 import com.spring5.webflux.demo.helpers.Count;
 import com.spring5.webflux.demo.helpers.PostId;
 import com.spring5.webflux.demo.models.Comment;
@@ -8,6 +9,7 @@ import com.spring5.webflux.demo.models.Post;
 import com.spring5.webflux.demo.repositories.CommentRepository;
 import com.spring5.webflux.demo.repositories.PostRepository;
 import com.spring5.webflux.demo.services.PostService;
+import javafx.geometry.Pos;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
@@ -37,8 +39,14 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public Mono<Post> create(Post post) {
-        return postRepository.save(post);
+    public Mono<Post> createForTravel(String travelId, Post post) {
+        return postRepository.save(Post.builder()
+                .content(post.getContent())
+                .travel(new BaseId(travelId))
+                .title(post.getTitle())
+                .createdDate(post.getCreatedDate())
+                .status(post.getStatus())
+                .build());
     }
 
     @Override
