@@ -16,9 +16,6 @@ public class CarServiceImpl implements CarService {
     @Autowired
     private CarRepository carRepository;
 
-    @Autowired
-    private UserRepository userRepository;
-
     @Override
     public Flux<Car> getAll() {
         return carRepository.findAll();

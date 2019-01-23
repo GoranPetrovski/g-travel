@@ -12,7 +12,7 @@ public interface PostService {
 
     Mono<Count> count(String q);
 
-    Mono<Post> create(Post post);
+    Mono<Post> createForTravel(String travelId, Post post);
 
     Mono<Post> getById(String id);
 
