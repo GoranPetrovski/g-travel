@@ -18,4 +18,3 @@ public class GTravelApplication {
         return new BCryptPasswordEncoder();
     }
 }
-
