@@ -6,6 +6,7 @@ import lombok.*;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Document
 @Data
@@ -16,6 +17,12 @@ import java.time.LocalDate;
 public class Travel {
 
     private String id;
+
+    private Boolean isPreciseTime;
+
+    private LocalTime fromTime;
+
+    private LocalDate toTime;
 
     private BaseId fromLocation; // cityId (Skopje)
 

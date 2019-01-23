@@ -1,5 +1,6 @@
 package com.spring5.webflux.demo.models;
 
+import com.spring5.webflux.demo.helpers.BaseId;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -18,6 +19,8 @@ import static com.spring5.webflux.demo.models.Post.Status.DRAFT;
 public class Post implements Serializable {
     @Id
     private String id;
+
+    private BaseId travel;
 
     @NotBlank
     private String title;
