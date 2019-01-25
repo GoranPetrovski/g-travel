@@ -9,6 +9,9 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.time.LocalDate;
+import java.util.Optional;
+
 @Service
 public class TravelServiceImpl implements TravelService {
 
@@ -34,5 +37,25 @@ public class TravelServiceImpl implements TravelService {
     @Override
     public Flux<Travel> getByType(Travel.Type type) {
         return travelRepository.findByType(type);
+    }
+
+    @Override
+    public Flux<Travel> filterByTypeAndLocationAndDestination(Travel.Type type, String locationId, String destinationId) {
+        return travelRepository.findByTypeAndFromLocationIdAndToDestinationId(type, locationId, destinationId);
+    }
+
+    @Override
+    public Flux<Travel> filterByDate(LocalDate date) {
+        return travelRepository.findAll().filter(t -> Optional.ofNullable(date)
+                .map(d -> t.getDate().equals(date)).orElse(true));
+    }
+
+    private Flux<Travel> filterTravels(Flux<Travel> travels, String from, String to) {
+        return travels.filter(t -> Travel.Type.TRAVELER == t.getType())
+                .filter(t -> Optional.ofNullable(from)
+                        .map(location -> t.getFromLocation().equals(from))
+                        .orElse(true))
+                .filter(t -> Optional.ofNullable(to)
+                        .map(destination -> t.getToDestination().equals(to)).orElse(true));
     }
 }

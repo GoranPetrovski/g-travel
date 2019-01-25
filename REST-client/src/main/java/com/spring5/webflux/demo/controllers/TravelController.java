@@ -8,6 +8,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import javax.validation.Valid;
+import java.time.LocalDate;
 
 @RestController
 @RequestMapping("/travels")
@@ -34,5 +35,19 @@ public class TravelController {
     @GetMapping("/{type}")
     public Flux<Travel> getByType(@PathVariable("type") Travel.Type type) {
         return travelService.getByType(type);
+    }
+
+    @GetMapping("{date}/{type}/{from}/{to}")
+    public Flux<Travel> filterByFromLocationToDestination(
+            @PathVariable("type") Travel.Type type,
+            @PathVariable("from") String from,
+            @PathVariable("to") String to) {
+
+        return travelService.filterByTypeAndLocationAndDestination(type, from, to);
+    }
+
+    @GetMapping("/{date}")
+    public Flux<Travel> filterByDate(@PathVariable("date") LocalDate date) {
+        return travelService.filterByDate(date);
     }
 }

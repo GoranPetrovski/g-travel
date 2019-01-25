@@ -42,6 +42,7 @@ public class TravelServiceTest {
         when(travelService.create(TRAVEL)).thenReturn(travelMono);
         when(travelService.getById("1")).thenReturn(travelMono);
         when(travelService.getByType(SELECTED_TYPE)).thenReturn(MOCK_TRAVELS.filter(t -> t.getType().equals(Travel.Type.TRAVELER)));
+        when(travelService.filterByDate(LocalDate.now())).thenReturn(MOCK_TRAVELS);
     }
 
     @Test
@@ -72,6 +73,15 @@ public class TravelServiceTest {
         StepVerifier.create(travelService.getByType(SELECTED_TYPE))
                 .expectNextMatches(travel -> {
                     assertEquals(travel.getType(), SELECTED_TYPE);
+                    return true;
+                }).expectComplete().verify();
+    }
+
+    @Test
+    public void filterByDate() {
+        StepVerifier.create(travelService.filterByDate(LocalDate.now()))
+                .expectNextMatches(travel -> {
+                    assertEquals(travel.getDate(), LocalDate.now().plusDays(1));
                     return true;
                 }).expectComplete().verify();
     }
